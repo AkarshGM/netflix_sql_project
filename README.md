@@ -84,9 +84,11 @@ WHERE rank = 1;
 ### 3. List All Movies Released in a Specific Year (e.g., 2020)
 
 ```sql
-SELECT * 
-FROM netflix
-WHERE release_year = 2020;
+SELECT * FROM netflix 
+	WHERE 
+		type = 'Movie' 
+		AND 
+		release_year = '2020';
 ```
 
 **Objective:** Retrieve all movies released in a specific year.
@@ -94,17 +96,12 @@ WHERE release_year = 2020;
 ### 4. Find the Top 5 Countries with the Most Content on Netflix
 
 ```sql
-SELECT * 
-FROM
-(
-    SELECT 
-        UNNEST(STRING_TO_ARRAY(country, ',')) AS country,
-        COUNT(*) AS total_content
-    FROM netflix
-    GROUP BY 1
-) AS t1
-WHERE country IS NOT NULL
-ORDER BY total_content DESC
+SELECT 
+	UNNEST(STRING_TO_ARRAY(country,',')) as new_country,
+	COUNT(show_id) as total_content
+FROM netflix
+GROUP BY 1
+ORDER BY 2 DESC 
 LIMIT 5;
 ```
 
